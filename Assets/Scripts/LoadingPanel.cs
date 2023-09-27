@@ -32,7 +32,7 @@ public class LoadingPanel : MonoBehaviour
 
     IEnumerator LoadNextLevel()
     {
-        AsyncOperation loadLevel = SceneManager.LoadSceneAsync("Game");
+        AsyncOperation loadLevel = SceneManager.LoadSceneAsync("Menu");
 
         while (!loadLevel.isDone)
         {
@@ -53,6 +53,6 @@ public class LoadingPanel : MonoBehaviour
             yield return null;
         }
 
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Menu");
     }
 }

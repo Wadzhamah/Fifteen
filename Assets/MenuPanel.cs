@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -30,7 +26,7 @@ public class MenuPanel : MonoBehaviour
 
     private void OnInfoButtonClick()
     {
-        throw new NotImplementedException();
+        Application.OpenURL("https://unity.com/unity-hub");
     }
 
     private void OnExitButtonClick()

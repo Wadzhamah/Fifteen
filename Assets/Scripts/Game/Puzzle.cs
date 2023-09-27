@@ -15,7 +15,7 @@ public class Puzzle: MonoBehaviour {
 		GameController.grid[x,y].transform.position = GameController.position[XX,YY];
 		GameController.grid[XX,YY] = GameController.grid[x,y];
 		GameController.grid[x,y] = null;
-		GameController.GameFinish();
+		GameController.Instance.GameFinish();
 	}
 
 	void OnMouseDown()
