@@ -13,10 +13,11 @@ public class GameController : MonoBehaviour
 	public event Action OnGameFinish;
 
     [SerializeField]
-    private TextMeshProUGUI timerText;
-
+    private TextMeshProUGUI _timerText;
     [SerializeField]
-    private TextMeshProUGUI movesText;
+    private TextMeshProUGUI _movesText;
+	[SerializeField]
+	private TextMeshProUGUI _playerName;
 
     private float timer;
     private int moves;
@@ -49,6 +50,8 @@ public class GameController : MonoBehaviour
     public float bounceDuration = 0.2f;
     public float bounceScale = 1.2f;
 
+    private SoundManager _soundManager;
+
     public static GameController Instance { get; private set; }
     private void Awake()
     {
@@ -62,9 +65,15 @@ public class GameController : MonoBehaviour
         }
 
 		UpdateMovesText();
+        _soundManager = FindObjectOfType<SoundManager>();
     }
 
-	void Update() 
+    private void Start()
+    {
+        Init();
+    }
+
+    void Update() 
 	{
         if (gameStarted)
         {
@@ -75,17 +84,19 @@ public class GameController : MonoBehaviour
 
     private void UpdateTimerText()
     {
-        if (timerText != null)
-        {
-            timerText.text = "Time: " + Mathf.Floor(timer).ToString();
-        }
+        int hours = Mathf.FloorToInt(timer / 3600); // Calculate hours
+        int minutes = Mathf.FloorToInt((timer % 3600) / 60); // Calculate minutes
+        int seconds = Mathf.FloorToInt(timer % 60); // Calculate seconds
+
+        // Use string interpolation to format the time as "00:00:00"
+        _timerText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
     }
 
     private void UpdateMovesText()
     {
-        if (movesText != null)
+        if (_movesText != null)
         {
-            movesText.text = moves.ToString();
+            _movesText.text = moves.ToString();
 			if (moves > 0)
 			{
 
@@ -94,13 +105,13 @@ public class GameController : MonoBehaviour
                     _bounceTween.Kill(); // Отменяет текущую анимацию.
                 }
 
-                _bounceTween = movesText.transform.DOScale(Vector3.one * bounceScale, bounceDuration)
+                _bounceTween = _movesText.transform.DOScale(Vector3.one * bounceScale, bounceDuration)
             .SetLoops(2, LoopType.Yoyo) // Две итерации (возврат к исходному размеру и обратно).
             .SetEase(Ease.OutQuad) // Кривая для плавного эффекта.
             .OnComplete(() =>
             {
                 // По завершении анимации, возвращаем масштаб к исходному значению.
-                movesText.transform.localScale = Vector3.one;
+                _movesText.transform.localScale = Vector3.one;
             });
             }
         }
@@ -108,6 +119,8 @@ public class GameController : MonoBehaviour
 
     public void Init()
 	{
+		_playerName.text = GlobalVariables.UserName;
+
         timer = 0;
         moves = 0;
         UpdateMovesText();
@@ -144,7 +157,7 @@ public class GameController : MonoBehaviour
         gameStarted = true;
 
         win = false;
-		txt.GetComponent<Text> ().color = new Color (0, 0, 0, 0);
+		//txt.GetComponent<Text> ().color = new Color (0, 0, 0, 0);
 		RandomPuzzle (true);
     }
 
@@ -296,6 +309,8 @@ public class GameController : MonoBehaviour
 	 public void GameFinish()
 	 {
 
+        SoundManager.PlaySfx(_soundManager.soundClick);
+
         int i = 1;
 		for(int y = 0; y < 4; y++)
 		{
@@ -393,7 +408,7 @@ public class GameController : MonoBehaviour
 
 
             win = true;
-            txt.GetComponent<Text>().color = new Color(0, 0, 0, 1);
+            //txt.GetComponent<Text>().color = new Color(0, 0, 0, 1);
 
             gameStarted = false;
 
