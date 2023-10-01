@@ -9,6 +9,9 @@ public class WinGamePopup : BaseScreen
     [SerializeField]
     private Button _replayButton;
 
+    [SerializeField]
+    GameObject _border;
+
     private GameController _gameController;
 
     private void GameController_OnGameFinish()
@@ -27,5 +30,17 @@ public class WinGamePopup : BaseScreen
         _gameController = GameController.Instance;
         _gameController.OnGameFinish += GameController_OnGameFinish;
         _replayButton.onClick.AddListener(OnReplayButtonClick);
+    }
+
+    public override void Open()
+    {
+        base.Open();
+        _border.SetActive(false);
+    }
+
+    public override void Close()
+    {
+        base.Close();
+        _border.SetActive(true);
     }
 }

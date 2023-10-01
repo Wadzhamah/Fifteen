@@ -17,7 +17,7 @@ public class Puzzle : MonoBehaviour
     {
         Transform currentTransform = GameController.grid[x, y].transform;
         Vector3 targetPosition = GameController.position[XX, YY];
-
+        
         // Используйте DOTween для анимации перемещения
         currentTransform.DOMove(targetPosition, 0.15f).SetEase(Ease.Linear).OnComplete(() =>
         {

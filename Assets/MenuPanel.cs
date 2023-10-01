@@ -40,6 +40,8 @@ public class MenuPanel : MonoBehaviour
         _userNameHolder.text = GlobalVariables.UserName;
 
         _soundManager = SoundManager.Instance;
+
+        Application.targetFrameRate = 60;
     }
 
     private void OnEndUsernameEdit(string arg0)
